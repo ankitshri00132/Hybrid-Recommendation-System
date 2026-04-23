@@ -1,6 +1,6 @@
 import pandas as pd
 
-DATA_PATH = "data/Music_Info.csv"
+DATA_PATH = "data/raw/Music_Info.csv"
 
 def clean_data(data):
     """
@@ -68,7 +68,7 @@ def main(data_path):
     cleaned_data = clean_data(data)
 
     # saving clean data
-    cleaned_data.to_csv("data/cleaned_music_data.csv",index=False)
+    cleaned_data.to_csv("data/processed/cleaned_music_data.csv",index=False)
 
 
 

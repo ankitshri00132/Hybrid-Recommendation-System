@@ -12,7 +12,7 @@ from scipy.sparse import save_npz
 from data_cleaning import data_for_content_filtering
 
 # cleaned data path
-CLEANED_DATA_PATH = "data/cleaned_songs_data.csv"
+CLEANED_DATA_PATH = "data/processed/cleaned_music_data.csv"
 
 # cols to transform 
 frequence_encode_cols = ['year']
@@ -54,7 +54,7 @@ def train_transformer(data):
     transformer.fit(data)
 
     # save the transformer
-    joblib.dump(transformer , "estimators/transformer.joblib")
+    joblib.dump(transformer , "transformer.joblib")
 
 
 def transform_data(data):
@@ -68,7 +68,7 @@ def transform_data(data):
     """
 
     # load the transformer
-    transformer = joblib.load("estimators/transformer.joblib")
+    transformer = joblib.load("transformer.joblib")
 
     # transform the data
     transformed_data  = transformer.transform(data)
@@ -172,7 +172,7 @@ def test_recommendation(data_path,song_name, k = 10):
     transformed_data = transform_data(data_content_filtering)
 
     # save transformed data
-    save_transformed_data(transformed_data,"data/transformed_data.npz")
+    save_transformed_data(transformed_data, "data/processed/transformed_data.npz")
 
     # filter out the song from the data
     song_row = data.loc[data["name"]==song_name]
@@ -196,5 +196,5 @@ def test_recommendation(data_path,song_name, k = 10):
 
 
 
-if __name__=="__main___":
+if __name__=="__main__":
     test_recommendation(CLEANED_DATA_PATH,"Hips Don't Lie")
