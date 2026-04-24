@@ -1,6 +1,6 @@
 stages:
   data_cleaning:
-    cmd: python src/data_cleaning.py
+    cmd: python -m src.data_cleaning
     deps:
     - data/raw/Music_Info.csv
     - src/data_cleaning.py
@@ -9,7 +9,7 @@ stages:
 
 
   transform_data:
-    cmd: python src/content_based_filtering.py
+    cmd: python -m src.content_based_filtering
     deps:
     - data/processed/cleaned_music_data.csv
     - src/content_based_filtering.py

@@ -9,7 +9,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from scipy.sparse import save_npz
 
-from data_cleaning import data_for_content_filtering
+from src.data_cleaning import data_for_content_filtering
 
 # cleaned data path
 CLEANED_DATA_PATH = "data/processed/cleaned_music_data.csv"
@@ -132,7 +132,7 @@ def recommend(song_name ,songs_data ,transformed_data,k=10) :
     song_row = songs_data.loc[songs_data["name"]==song_name]
 
     if song_row.empty:
-        print("Song not found in our dataset")
+        print("Song not found in our dataset. Please try another song.")
     else:
         # get the index of the song
         song_index = song_row.index[0]
