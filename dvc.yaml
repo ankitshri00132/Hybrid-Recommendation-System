@@ -17,4 +17,16 @@ stages:
     outs:
     - data/processed/transformed_data.npz
     - transformer.joblib
-    - models/nearest_neighbor.joblib
+    - models/nearest_neighbor_cbf.joblib
+  
+
+  interaction_data:
+    cmd: python -m src.collaborative_filtering
+    deps:
+    - data/raw/User_Listening_History.csv
+    - src/collaborative_filtering.py
+    - data/processed/cleaned_music_data.csv
+    outs:
+    - data/processed/track_ids.npy
+    - data/processed/collab_filtered_data.csv
+    - data/processed/interaction_matrix.npz

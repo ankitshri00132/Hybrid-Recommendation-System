@@ -113,16 +113,17 @@ def save_model(model):
     parameter:
     model :  A trained model
     """
-    joblib.dump(model,"models/nearest_neighbor.joblib")
+    joblib.dump(model,"models/nearest_neighbor_cbf.joblib")
 
 
 
-def recommend(song_name ,songs_data,model,song_to_index,transformed_data,k=10) :
+def content_recommendation(song_name,artist_name,songs_data,model,song_artist_index,transformed_data,k=10) :
     """
         Recommends top k songs similar to the given song based on content-based filtering.
 
         Parameters:
         song_name (str): The name of the song to base the recommendations on.
+        artist_name (str): The name of the Artist of the songs.
         songs_data (DataFrame): The DataFrame containing song information.
         model : Trained Nearest Neighbour Model
         songs_to_index : A precomputed dictionary of all the songs with their indexes
@@ -133,11 +134,14 @@ def recommend(song_name ,songs_data,model,song_to_index,transformed_data,k=10) :
         DataFrame: A DataFrame containing the top k recommended songs with their names, artists, and Spotify preview URLs.
     """
     try : 
-        # convert song name to lower case
-        song_name = song_name.lower()
+        # convert song & artist name to lower case
+        song_name = song_name.strip().lower()
+        artist_name = artist_name.strip().lower()
+
+        song_key = (song_name,artist_name)
 
         # get the index of the songs
-        song_idx = song_to_index.get(song_name)
+        song_idx = song_artist_index.get(song_key)
 
         if song_idx is None:
             raise AttributeError("Not found in our data")

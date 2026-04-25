@@ -1,6 +1,6 @@
 /transformer.joblib
-
 # Ignore data files but allow DVC tracking files
 data/raw/*.csv
 data/processed/*.csv
 data/processed/*.npz
+assets

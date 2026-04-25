@@ -25,8 +25,8 @@ stages:
       size: 13709636
     - path: src/content_based_filtering.py
       hash: md5
-      md5: c1eb422dd7fc850c9d90fcc8aedfa94c
-      size: 6299
+      md5: eb150d6b50aff30f89025a216e6da48a
+      size: 6513
     - path: src/data_cleaning.py
       hash: md5
       md5: 945a505f745df0a6681c90f9637c706e
@@ -36,11 +36,39 @@ stages:
       hash: md5
       md5: f32fa1890a52bed4fe44aaac84bf5815
       size: 4522794
-    - path: models/nearest_neighbor.joblib
+    - path: models/nearest_neighbor_cbf.joblib
       hash: md5
       md5: b47da039a88c3730366db622dbc0ffd3
       size: 11098462
     - path: transformer.joblib
       hash: md5
-      md5: fd5e13bcb93d8824100f596ec9bd1628
+      md5: 23fdabf0b0001b5b593f8466a3718ff3
       size: 135357
+  interaction_data:
+    cmd: python -m src.collaborative_filtering
+    deps:
+    - path: data/processed/cleaned_music_data.csv
+      hash: md5
+      md5: b5e99f8fcf0e54fa347c97490c779d67
+      size: 13709636
+    - path: data/raw/User_Listening_History.csv
+      hash: md5
+      md5: 3a12e713844195171c7040c051d6d4ae
+      size: 602515573
+    - path: src/collaborative_filtering.py
+      hash: md5
+      md5: 828d2eebbdc760b0ea75af4f95515dda
+      size: 4821
+    outs:
+    - path: data/processed/collab_filtered_data.csv
+      hash: md5
+      md5: c0fc661e2f86835ab81094d000285e93
+      size: 8259927
+    - path: data/processed/interaction_matrix.npz
+      hash: md5
+      md5: 53f8fa1e7cec19856a6b2bc60ce8881f
+      size: 32311353
+    - path: data/processed/track_ids.npy
+      hash: md5
+      md5: 4a52e4cb6bae6b0126c1344dac7c7686
+      size: 640058
