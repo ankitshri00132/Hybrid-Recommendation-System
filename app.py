@@ -95,25 +95,42 @@ st.write("### Enter the name of a song and artist and the recommender will sugge
 # text input 
 song_name = st.text_input("Enter a song name : " )
 st.write("You Entered : ", song_name)
-song_name = song_name.strip()
+song_name = song_name.strip().lower()
 
 # artist input 
 artist_name = st.text_input("Enter the artist name : " )
 st.write("You Entered : ", artist_name)
-artist_name = artist_name.strip()
+artist_name = artist_name.strip().lower()
 
-
-# type of filtering
-filtering_type = st.selectbox("Select the type of filtering : ",["Content-Based Filtering","Collaborative Filtering","Hybrid Recommender System"],index=2)
 # k recommendation
 k = st.selectbox("How many recommendations do you want ? ",[5,10,15,20],index=1)
+
+if ((filtered_data["name"] == song_name) & (filtered_data["artist"] == artist_name)).any():
+    # type of filtering
+    filtering_type = st.selectbox(label="Select the type of filtering : ",options=["Content-Based Filtering","Collaborative Filtering","Hybrid Recommender System"],index=2)
+
+    # diversity slider
+    diversity = st.slider(label="Diversity in Recommendations",
+                          min_value=1,
+                          max_value = 10,
+                          value=5,
+                          step=1)
+    content_based_weight = 1 - (diversity/10)
+else:
+    filtering_type = st.selectbox(label = "Select the type of filtering : ",options = ["Content-Based Filtering"])
 
 # button 
 try :
     if filtering_type == 'Content-Based Filtering':
         if st.button("Get Recommendation"):
             st.write("Recommendation for ",f" **{song_name}** by **{artist_name}**")
-            recommendations = content_recommendation(song_name,artist_name,data,cbf_model,song_artist_index,transformed_data,k)
+            recommendations = content_recommendation(song_name = song_name,
+                                                     artist_name = artist_name,
+                                                     songs_data=data,
+                                                     model = cbf_model,
+                                                     song_artist_index=song_artist_index,
+                                                     transformed_data=transformed_data,
+                                                     k=k)
 
             # display recommendation
             for ind,recommendation in recommendations.iterrows():
@@ -178,8 +195,7 @@ try :
                 recommender = hrs(song_name = song_name,
                                                  artist_name = artist_name,
                                                  number_of_recommendations= k, 
-                                                 weight_content_based= 0.2,
-                                                 weight_collaborative =0.9,
+                                                 weight_content_based= content_based_weight,
                                                  songs_data = filtered_data,
                                                  transformed_matrix = transformed_hybrid_data,
                                                  interaction_matrix = interaction_matrix,

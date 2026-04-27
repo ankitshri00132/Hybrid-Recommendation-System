@@ -7,14 +7,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 class HybridRecommenderSystem:
 
         def __init__(self, song_name: str, artist_name: str, number_of_recommendations: int, weight_content_based: float,
-                    weight_collaborative :float,songs_data,transformed_matrix,interaction_matrix,track_ids):
+                    songs_data,transformed_matrix,interaction_matrix,track_ids):
             
             self.number_of_recommendations = number_of_recommendations
             self.song_name = song_name.strip().lower()
             self.artist_name = artist_name.strip().lower()
             self.weight_content_based =weight_content_based
-            self.weight_collaborative =weight_collaborative
-            self.songs_data =songs_data
+            self.weight_collaborative = 1- weight_content_based
+            self.songs_data =songs_data 
             self.transformed_matrix =transformed_matrix
             self.interaction_matrix =interaction_matrix
             self.track_ids =track_ids
@@ -115,37 +115,3 @@ class HybridRecommenderSystem:
                 )
             return top_k_songs 
         
-
-
-if __name__ == "__main__":
-    # load the transformed data
-    transformed_data = load_npz('data/processed/transformed_hybrid_data.npz')
-
-    # load the interaction matrix
-    interaction_matrix = load_npz('data/processed/interaction_matrix.npz')
-
-    # load the track ids
-    track_ids = np.load('data/processed/track_ids.npy',allow_pickle=True)
-
-    # load the songs data
-    songs_data = pd.read_csv("data/processed/collab_filtered_data.csv",usecols=["track_id","name","artist","spotify_preview_url"])
-
-    # create an instance of HybricRecommenderSystem
-    song_name = "hips don't lie"
-    artist_name = "shakira"
-
-    hybrid_recommender = HybridRecommenderSystem(song_name = song_name,
-                                                 artist_name = artist_name,
-                                                 number_of_recommendations= 10, 
-                                                 weight_content_based= 0.3,
-                                                 weight_collaborative =0.7,
-                                                 songs_data = songs_data,
-                                                 transformed_matrix = transformed_data,
-                                                 interaction_matrix = interaction_matrix,
-                                                 track_ids = track_ids)
-    
-
-    # get recommendation
-    recommendations = hybrid_recommender.give_recommendations()
-
-    print(recommendations)
